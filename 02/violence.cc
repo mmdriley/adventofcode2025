@@ -32,10 +32,10 @@ std::string operator*(const std::string& lhs, int rhs) {
     py_unique_ptr rhs_pynum{ PyLong_FromLong(rhs) };
     assert(rhs_pynum);
 
-    py_unique_ptr result_pynumber{ PyNumber_Multiply(lhs_pystr.get(), rhs_pynum.get()) };
-    assert(result_pynumber);
+    py_unique_ptr result_pystr{ PyNumber_Multiply(lhs_pystr.get(), rhs_pynum.get()) };
+    assert(result_pystr);
 
-    return std::string(PyUnicode_AsUTF8(result_pynumber.get()));
+    return std::string(PyUnicode_AsUTF8(result_pystr.get()));
 }
 
 int main() {
