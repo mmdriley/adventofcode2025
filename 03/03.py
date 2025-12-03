@@ -1,15 +1,25 @@
-total = 0
+import functools
+
+@functools.cache
+def max_joltage(digits: str, n: int) -> int:
+    if n == 0 or len(digits) == 0 or n > len(digits):
+        return 0
+
+    v1 = int(digits[0]) * 10 ** (n - 1) + max_joltage(digits[1:], n - 1)
+    v2 = max_joltage(digits[1:], n)
+
+    return max(v1, v2)
+
+
+total1 = 0
+total2 = 0
 
 with open('03.txt') as f:
     for l in f:
-        digits = [int(x) for x in l.strip()]
+        digits = l.strip()
 
-        max_joltage = 0
+        total1 += max_joltage(digits, 2)
+        total2 += max_joltage(digits, 12)
 
-        for i in range(0, len(digits)):
-            for j in range(i + 1, len(digits)):
-                joltage = digits[i] * 10 + digits[j]
-                max_joltage = max(max_joltage, joltage)
-        total += max_joltage
-
-print(total)
+print(total1)
+print(total2)
