@@ -5,8 +5,10 @@ with open('04.txt') as f:
         l = l.strip()
         if not l:
             continue
-        grid = grid + [[' '] + list(l) + [' ']]
+        grid.append(list(l))
 
+# pad the border with spaces
+grid = [[' '] + l + [' '] for l in grid]
 pad = [' '] * len(grid[0])
 grid = [pad] + grid + [pad]
 
@@ -32,8 +34,8 @@ def remove_round(grid: list[list[str]]) -> int:
                 continue
 
             present = 0
-            for dx, dy in adjacencies:
-                if grid[i + dx][j + dy] == '@':
+            for di, dj in adjacencies:
+                if grid[i + di][j + dj] == '@':
                     present += 1
             if present < 4:
                 removed.append((i, j))
