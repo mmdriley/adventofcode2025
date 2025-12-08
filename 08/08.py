@@ -1,5 +1,6 @@
 from collections import Counter
 import math
+import heapq
 
 coord = tuple[int, int, int]
 
@@ -26,15 +27,26 @@ distances: list[tuple[float, coord, coord]] = []
 
 for i, c1 in enumerate(box_coords):
     for c2 in box_coords[i+1:]:
-        distances.append((dist(c1, c2), c1, c2))
+        heapq.heappush(distances, (dist(c1, c2), c1, c2))
 
-distances = sorted(distances)
-
-connections = 0
+connection_attempts = 0
+n_circuits = len(circuits)
 part2_result = 0
+latest_size = 0
 
-for _, c1, c2 in distances:
-    connections += 1
+while n_circuits > 1:
+    _, c1, c2 = heapq.heappop(distances)
+
+    connection_attempts += 1
+    if connection_attempts == 1000:
+        # part 1
+        circuits_counter = Counter(circuits.values())
+
+        result = 1
+        for _, n in circuits_counter.most_common(3):
+            result *= n
+        print(result)
+
     if circuits[c1] == circuits[c2]:
         # already connected to each other
         continue
@@ -51,14 +63,6 @@ for _, c1, c2 in distances:
     in_old_circuit = [k for k, v in circuits.items() if v == old_circuit]
     for c in in_old_circuit:
         circuits[c] = new_circuit
-
-    if connections == 1000:
-        # part 1
-        circuits_counter = Counter(circuits.values())
-
-        result = 1
-        for _, n in circuits_counter.most_common(3):
-            result *= n
-        print(result)
+    n_circuits -= 1
 
 print(part2_result)
