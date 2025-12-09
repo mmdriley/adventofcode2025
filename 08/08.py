@@ -7,7 +7,7 @@ coord = tuple[int, int, int]
 def dist(t1: coord, t2: coord) -> float:
     x1, y1, z1 = t1
     x2, y2, z2 = t2
-    return math.sqrt((x1 - x2)**2 + (y1 - y2)**2 + (z1 - z2)**2)
+    return math.sqrt((x1-x2) * (x1-x2) + (y1-y2) * (y1-y2) + (z1-z2) * (z1-z2))
 
 box_coords: list[coord] = []
 with open('08.txt') as f:
